@@ -1,0 +1,35 @@
+============================================================
+PHASE 02: TEXT PREPROCESSING & NORMALIZATION
+============================================================
+Original Input:  '   I NEED HELP!!!   '
+Cleaned Output:  'i need help'
+
+--- MULTI-SENTENCE TEST SUITE ---
+[1] Raw:     "   I NEED HELP!!!   "
+    Cleaned: "i need help"
+[2] Raw:     "Can ANYBODY tell me where room #402 is located???"
+    Cleaned: "can anybody tell me where room 402 is located"
+[3] Raw:     "Special Offer!! Buy 1 GET 1 Free @ Store... Valid until 10/12/2026."
+    Cleaned: "special offer buy 1 get 1 free  store valid until 10122026"
+[4] Raw:     "Error 404:   Page not found --- please contact admin@university.edu!"
+    Cleaned: "error 404 page not found  please contact adminuniversityedu"
+[5] Raw:     "     Welcome     to     Natural   Language   Processing  (NLP)!!!   "
+    Cleaned: "welcome to natural language processing nlp"
+[6] Raw:     "Is tuition fee due on Monday, Oct 15th? Please reply ASAP!!!"
+    Cleaned: "is tuition fee due on monday oct 15th please reply asap"
+
+--- STEP-BY-STEP TRACE (FIRST EXAMPLE) ---
+  raw                   : "Can ANYBODY tell me where room #402 is located???"
+  stripped              : "Can ANYBODY tell me where room #402 is located???"
+  lowercased            : "can anybody tell me where room #402 is located???"
+  whitespace_collapsed  : "can anybody tell me where room #402 is located???"
+  final_cleaned         : "can anybody tell me where room 402 is located"
+
+--- THEORETICAL SUMMARY: WHY TEXT PREPROCESSING IS USEFUL ---
+1. Dimensionality Reduction: Without lowercasing, 'Course', 'course', and 'COURSE'
+   would be treated as three distinct vocabulary tokens, inflating the feature matrix.
+2. Noise Elimination: Punctuation (e.g., '!!!', '???', '---') often carries little semantic
+   discrimination in bag-of-words tasks and fragments token matches (e.g., 'help!' vs 'help').
+3. Data Consistency: Normalizing redundant whitespace ensures uniform token splitting across
+   heterogeneous raw sources (web pages, user form inputs, PDFs).
+4. Improved Generalization: Cleaner tokens enhance statistical overlap between training and inference data.

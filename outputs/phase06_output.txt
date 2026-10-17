@@ -1,0 +1,32 @@
+============================================================
+PHASE 06: SEMANTIC SEARCH ENGINE
+============================================================
+Indexed 4 documents. Embedding shape: (4, 384)
+
+============================================================
+TESTING SEMANTIC SEARCH WITH MULTIPLE USER QUERIES
+============================================================
+
+[QUERY 1]: "Where can I register my courses?"
+  Rank 1 | Score: 0.7061 ★ (BEST MATCH) -> Students can register courses through the student portal.
+  Rank 2 | Score: 0.2882                 -> The library provides digital research resources.
+  Rank 3 | Score: 0.2831                 -> The examination office publishes examination schedules.
+  Rank 4 | Score: 0.2197                 -> The finance office handles tuition fee issues.
+
+[QUERY 2]: "When will final exam timetable and date sheets be announced?"
+  Rank 1 | Score: 0.6845 ★ (BEST MATCH) -> The examination office publishes examination schedules.
+  Rank 2 | Score: 0.2312                 -> Students can register courses through the student portal.
+  Rank 3 | Score: 0.1743                 -> The library provides digital research resources.
+  Rank 4 | Score: 0.1589                 -> The finance office handles tuition fee issues.
+
+[QUERY 3]: "I need help resolving my university tuition fee balance."
+  Rank 1 | Score: 0.7410 ★ (BEST MATCH) -> The finance office handles tuition fee issues.
+  Rank 2 | Score: 0.2215                 -> Students can register courses through the student portal.
+  Rank 3 | Score: 0.1654                 -> The examination office publishes examination schedules.
+  Rank 4 | Score: 0.1420                 -> The library provides digital research resources.
+
+[QUERY 4]: "How do I access academic journals, books, and study materials?"
+  Rank 1 | Score: 0.6923 ★ (BEST MATCH) -> The library provides digital research resources.
+  Rank 2 | Score: 0.2789                 -> Students can register courses through the student portal.
+  Rank 3 | Score: 0.2014                 -> The examination office publishes examination schedules.
+  Rank 4 | Score: 0.1345                 -> The finance office handles tuition fee issues.

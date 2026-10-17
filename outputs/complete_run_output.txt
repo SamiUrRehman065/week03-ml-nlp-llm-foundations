@@ -1,0 +1,393 @@
+================================================================================
+STARTING FULL EXECUTION: WEEK 03 — ML, NLP & LLM FOUNDATIONS
+================================================================================
+
+>>> EXECUTING PHASE 01: TEXT CLASSIFICATION (NAIVE BAYES) <<<
+============================================================
+PHASE 01: BASELINE NAIVE BAYES CLASSIFICATION (ORIGINAL CODE)
+============================================================
+Training Vocabulary: ['course', 'excellent', 'hate', 'is', 'love', 'terrible', 'this']
+Input Text: I really love this course
+Prediction: positive
+
+============================================================
+PHASE 01: COMPREHENSIVE DATASET, TRAIN/TEST SPLIT & EVALUATION
+============================================================
+Dataset Size: 10 samples (Train: 8, Test: 2)
+Accuracy: 1.0000
+
+Classification Report:
+              precision    recall  f1-score   support
+
+    negative       1.00      1.00      1.00         1
+    positive       1.00      1.00      1.00         1
+
+    accuracy                           1.00         2
+   macro avg       1.00      1.00      1.00         2
+weighted avg       1.00      1.00      1.00         2
+
+Inference on New Unseen Texts:
+  - 'I really love this course' -> [POSITIVE] (pos_prob=0.88, neg_prob=0.12)
+  - 'The course was terrible and useless' -> [NEGATIVE] (pos_prob=0.15, neg_prob=0.85)
+  - 'Fantastic explanation of concepts' -> [POSITIVE] (pos_prob=0.80, neg_prob=0.20)
+
+--- THEORETICAL SUMMARY: TRAINING VS. INFERENCE ---
+1. Training: The phase where the model learns statistical parameters/weights from labeled data.
+   Here, CountVectorizer learns the vocabulary dictionary and document frequencies (fit_transform),
+   and MultinomialNB calculates prior and likelihood probabilities P(w|c).
+2. Inference: The phase where the trained model processes new, unseen text using fixed parameters.
+   CountVectorizer converts the new text using the previously fitted vocabulary (transform),
+   and the classifier evaluates argmax_c P(c|text) to output the predicted class without updating weights.
+
+>>> EXECUTING PHASE 02: NLP TEXT PREPROCESSING <<<
+============================================================
+PHASE 02: TEXT PREPROCESSING & NORMALIZATION
+============================================================
+Original Input:  '   I NEED HELP!!!   '
+Cleaned Output:  'i need help'
+
+--- MULTI-SENTENCE TEST SUITE ---
+[1] Raw:     "   I NEED HELP!!!   "
+    Cleaned: "i need help"
+[2] Raw:     "Can ANYBODY tell me where room #402 is located???"
+    Cleaned: "can anybody tell me where room 402 is located"
+[3] Raw:     "Special Offer!! Buy 1 GET 1 Free @ Store... Valid until 10/12/2026."
+    Cleaned: "special offer buy 1 get 1 free  store valid until 10122026"
+[4] Raw:     "Error 404:   Page not found --- please contact admin@university.edu!"
+    Cleaned: "error 404 page not found  please contact adminuniversityedu"
+[5] Raw:     "     Welcome     to     Natural   Language   Processing  (NLP)!!!   "
+    Cleaned: "welcome to natural language processing nlp"
+[6] Raw:     "Is tuition fee due on Monday, Oct 15th? Please reply ASAP!!!"
+    Cleaned: "is tuition fee due on monday oct 15th please reply asap"
+
+--- STEP-BY-STEP TRACE (FIRST EXAMPLE) ---
+  raw                   : "Can ANYBODY tell me where room #402 is located???"
+  stripped              : "Can ANYBODY tell me where room #402 is located???"
+  lowercased            : "can anybody tell me where room #402 is located???"
+  whitespace_collapsed  : "can anybody tell me where room #402 is located???"
+  final_cleaned         : "can anybody tell me where room 402 is located"
+
+--- THEORETICAL SUMMARY: WHY TEXT PREPROCESSING IS USEFUL ---
+1. Dimensionality Reduction: Without lowercasing, 'Course', 'course', and 'COURSE'
+   would be treated as three distinct vocabulary tokens, inflating the feature matrix.
+2. Noise Elimination: Punctuation (e.g., '!!!', '???', '---') often carries little semantic
+   discrimination in bag-of-words tasks and fragments token matches (e.g., 'help!' vs 'help').
+3. Data Consistency: Normalizing redundant whitespace ensures uniform token splitting across
+   heterogeneous raw sources (web pages, user form inputs, PDFs).
+4. Improved Generalization: Cleaner tokens enhance statistical overlap between training and inference data.
+
+>>> EXECUTING PHASE 03: TOKENIZATION SUITE (CODES 01 - 11) <<<
+***************************************************************************
+PHASE 03: COMPLETE TOKENIZATION EXPERIMENTAL SUITE
+***************************************************************************
+============================================================
+PHASE 03 - CODE 01: BERT TOKENIZATION & ENCODING
+============================================================
+Original Text: Large language models are powerful.
+
+Tokens:
+['large', 'language', 'models', 'are', 'powerful', '.']
+
+Token IDs:
+[101, 2312, 2653, 4275, 2024, 3928, 1012, 102]
+
+============================================================
+PHASE 03 - CODE 02: BERT ENCODING, SPECIAL TOKENS & DECODING
+============================================================
+Original text:
+Large language models are powerful.
+
+Tokens:
+['large', 'language', 'models', 'are', 'powerful', '.']
+
+Token IDs:
+[101, 2312, 2653, 4275, 2024, 3928, 1012, 102]
+
+Number of tokens:
+8
+
+Decoded text:
+[CLS] large language models are powerful. [SEP]
+
+============================================================
+PHASE 03 - CODE 03: BPE CHARACTER PAIR COUNTING
+============================================================
+Character Vocab Lists per Word:
+[['l', 'o', 'w'], ['l', 'o', 'w', 'e', 'r'], ['l', 'o', 'w', 'e', 's', 't']]
+
+Adjacent Character Pair Frequencies:
+Counter({('l', 'o'): 3, ('o', 'w'): 3, ('w', 'e'): 2, ('e', 'r'): 1, ('e', 's'): 1, ('s', 't'): 1})
+
+Most Frequent Pair: (('l', 'o'), 3)
+
+============================================================
+PHASE 03 - CODE 04: CHARACTER-LEVEL TOKENIZATION & VOCABULARY
+============================================================
+Text: hello
+Character Tokens: ['h', 'e', 'l', 'l', 'o']
+Vocabulary Map: {'h': 0, 'e': 1, 'l': 2, 'o': 3}
+Mapped Token IDs: [0, 1, 2, 2, 3]
+
+============================================================
+PHASE 03 - CODE 05: COMPARING TOKENIZERS (BERT VS. GPT-2)
+============================================================
+
+Model: bert-base-uncased
+Tokens: ['artificial', 'intelligence', 'is', 'transforming', 'software', 'engineering', '.']
+Number of tokens: 7
+
+Model: gpt2
+Tokens: ['Art', 'ificial', 'Ġintelligence', 'Ġis', 'Ġtransforming', '\n', 'software', 'Ġengineering', '.']
+Number of tokens: 9
+
+============================================================
+PHASE 03 - CODE 06: SENTENCEPIECE UNIGRAM MODEL TRAINING & USAGE
+============================================================
+1. Written training text to 'training.txt'
+2. Trained SentencePiece model successfully -> 'my_tokenizer.model'
+
+Original text:
+Artificial intelligence is changing software engineering.
+
+Tokens (String Subwords):
+[' Art', 'ific', 'i', 'al', ' ', 'int', 'ell', 'i', 'g', 'en', 'ce', ' is', ' changing', ' software', ' engineering', '.']
+
+Token IDs:
+[24, 45, 12, 43, 6, 31, 38, 12, 29, 39, 44, 28, 48, 27, 26, 7]
+
+Number of tokens:
+16
+
+Decoded text:
+Artificial intelligence is changing software engineering.
+
+============================================================
+PHASE 03 - CODE 07: SPECIAL TOKENS ([CLS], [SEP])
+============================================================
+Text: Hello world
+Tokens: ['hello', 'world']
+Token IDs (with special tokens): [101, 7592, 2088, 102]
+
+Special Token Properties:
+cls_token:    [CLS]
+sep_token:    [SEP]
+cls_token_id: 101
+sep_token_id: 102
+
+============================================================
+PHASE 03 - CODE 08: CHARACTERS VS. TOKENS
+============================================================
+Input Text:
+Artificial intelligence is transforming
+software engineering and many other fields.
+
+Characters: 86
+Tokens:     11
+Compression Ratio (Chars/Token): 7.82
+
+============================================================
+PHASE 03 - CODE 09: BASIC WHITESPACE TOKENIZATION
+============================================================
+Text: Agentic AI systems can use tools
+Tokens: ['agentic', 'ai', 'systems', 'can', 'use', 'tools']
+Token count: 6
+
+============================================================
+PHASE 03 - CODE 10: VOCABULARY MAPPING & <UNK> TOKEN HANDLING
+============================================================
+Tokens:
+['Large', 'language', 'models', 'understand', 'text']
+
+Vocabulary Dictionary: {'<UNK>': 0, 'Large': 1, 'language': 2, 'models': 3, 'understand': 4, 'text': 5}
+
+Token IDs:
+[1, 2, 3, 4, 5]
+
+Demonstrating Out-Of-Vocabulary (<UNK>) Resolution:
+  Sentence: 'Large language robots understand code'
+  Tokens:   ['Large', 'language', 'robots', 'understand', 'code']
+  Token IDs: [1, 2, 0, 4, 0]  (Notice 'robots' and 'code' mapped to <UNK>=0)
+
+============================================================
+PHASE 03 - CODE 11: BERT SUBWORD TOKENIZATION (WORDPIECE)
+============================================================
+Input Text: Playing with language models.
+Subword Tokens: ['playing', 'with', 'language', 'models', '.']
+
+Note: 'playing' is decomposed into root 'play' and suffix '##ing' when unfamiliar.
+The '##' prefix indicates that this subword attaches to the preceding token.
+
+============================================================
+--- THEORETICAL SUMMARY: SPECIAL TOKENS & SUBWORD TOKENIZATION ---
+============================================================
+1. Special Tokens:
+   - [CLS] (Classification Token): Added at the beginning of input sequence.
+     Its hidden state vector is traditionally pooled for sequence classification tasks.
+   - [SEP] (Separator Token): Marks boundaries between sentences (e.g., question & context).
+   - [PAD] / [MASK] / [UNK]: Used for batch alignment, masked language modeling,
+     and out-of-vocabulary fallback.
+
+2. Subword Tokenization (WordPiece / BPE / Unigram):
+   - Overcomes Out-Of-Vocabulary (OOV) limitations by decomposing rare or inflected words
+     into common morphological sub-units (e.g., 'playing' -> 'play' + '##ing').
+   - Balances vocabulary compactness (typically 30,000-50,000 tokens) with representation power,
+     preventing the vocabulary explosion of word-level models while preserving semantic
+     meaning better than purely character-level models.
+
+>>> EXECUTING PHASE 04: CLASSIFICATION PIPELINES & MODEL COMPARISON <<<
+============================================================
+PHASE 04 - CODE 01: SCIKIT-LEARN PIPELINE CLASSIFICATION
+============================================================
+Dataset Loaded From: c:\Users\SamiUrRehman\Downloads\Week_03_ML_NLP_LLM_Foundations\data\support_tickets.csv
+Pipeline Classification Report (Support Tickets):
+              precision    recall  f1-score   support
+
+     account       1.00      1.00      1.00         1
+   admission       1.00      1.00      1.00         1
+     finance       1.00      1.00      1.00         1
+   technical       1.00      1.00      1.00         1
+
+    accuracy                           1.00         4
+   macro avg       1.00      1.00      1.00         4
+weighted avg       1.00      1.00      1.00         4
+
+Inference with Pipeline:
+  Query: 'I forgot my password and portal login failed' -> [account]
+  Query: 'The backend server is throwing error 500' -> [technical]
+  Query: 'Where should I pay my semester fee receipt?' -> [finance]
+  Query: 'When is registration deadline for new admissions?' -> [admission]
+
+============================================================
+PHASE 04 - CODE 02: TF-IDF & MODEL COMPARISONS
+============================================================
+Dataset Size: 10 samples (Train: 8, Test: 2)
+Features (TF-IDF Vocab): 14 tokens
+
+--------------------------------------------------
+MODEL: LogisticRegression
+--------------------------------------------------
+Accuracy: 1.0000
+
+Classification Report:
+              precision    recall  f1-score   support
+
+    negative       1.00      1.00      1.00         1
+    positive       1.00      1.00      1.00         1
+
+    accuracy                           1.00         2
+   macro avg       1.00      1.00      1.00         2
+weighted avg       1.00      1.00      1.00         2
+
+Inference on 'I really love this': positive
+--------------------------------------------------
+MODEL: LinearSVC
+--------------------------------------------------
+Accuracy: 1.0000
+
+Classification Report:
+              precision    recall  f1-score   support
+
+    negative       1.00      1.00      1.00         1
+    positive       1.00      1.00      1.00         1
+
+    accuracy                           1.00         2
+   macro avg       1.00      1.00      1.00         2
+weighted avg       1.00      1.00      1.00         2
+
+Inference on 'I really love this': positive
+--------------------------------------------------
+MODEL: MultinomialNB
+--------------------------------------------------
+Accuracy: 1.0000
+
+Classification Report:
+              precision    recall  f1-score   support
+
+    negative       1.00      1.00      1.00         1
+    positive       1.00      1.00      1.00         1
+
+    accuracy                           1.00         2
+   macro avg       1.00      1.00      1.00         2
+weighted avg       1.00      1.00      1.00         2
+
+Inference on 'I really love this': positive
+
+>>> EXECUTING PHASE 05: EMBEDDINGS & SEMANTIC SIMILARITY <<<
+============================================================
+PHASE 05: EMBEDDINGS & SEMANTIC SIMILARITY
+============================================================
+Loading Model: sentence-transformers/all-MiniLM-L6-v2...
+
+Input Sentences:
+  [0] 'How do I reset my password?'
+  [1] 'I forgot my password.'
+  [2] 'The weather is very hot today.'
+
+Generated Embeddings Shape: (3, 384) (Count: 3, Dimension: 384)
+
+Password similarity [Sentence 0 vs Sentence 1]: 0.7712
+Weather similarity  [Sentence 0 vs Sentence 2]: 0.0881
+
+--- EXTENDED PAIRWISE COMPARISONS ---
+  Pair: "The laptop battery is dying quickly."
+        "My computer discharges in less than an hour."
+  -> Cosine Similarity: 0.7842
+
+  Pair: "Students study for exam."
+        "Children are playing football in the garden."
+  -> Cosine Similarity: 0.1120
+
+  Pair: "Tuition fees must be paid by Friday."
+        "When is the tuition fee payment deadline?"
+  -> Cosine Similarity: 0.8415
+
+--- THEORETICAL SUMMARY: WORD COUNTS VS. SEMANTIC EMBEDDINGS ---
+1. Word Counts / TF-IDF (Sparse Representations):
+   - Treat words as orthogonal dimensions in a massive, sparse vocabulary space.
+   - Lack semantic awareness: 'forgot password' and 'reset password' have 0 overlap
+     on those specific differing words, yielding low lexical similarity despite near-identical intent.
+   - Suffer from the curse of dimensionality and cannot capture synonyms or context.
+
+2. Dense Semantic Embeddings (Sentence Transformers):
+   - Encode text into continuous, low-dimensional vector space (e.g. 384 or 768 dimensions).
+   - Capture deep semantic meaning, context, and intent learned via contrastive pretraining.
+   - Sentences sharing meaning map to vectors pointing in almost the same direction
+     (high cosine similarity near 1.0), even with completely different vocabularies.
+
+>>> EXECUTING PHASE 06: SEMANTIC SEARCH ENGINE <<<
+============================================================
+PHASE 06: SEMANTIC SEARCH ENGINE
+============================================================
+Indexed 4 documents. Embedding shape: (4, 384)
+
+============================================================
+TESTING SEMANTIC SEARCH WITH MULTIPLE USER QUERIES
+============================================================
+
+[QUERY 1]: "Where can I register my courses?"
+  Rank 1 | Score: 0.7061 ★ (BEST MATCH) -> Students can register courses through the student portal.
+  Rank 2 | Score: 0.2882                 -> The library provides digital research resources.
+  Rank 3 | Score: 0.2831                 -> The examination office publishes examination schedules.
+  Rank 4 | Score: 0.2197                 -> The finance office handles tuition fee issues.
+
+[QUERY 2]: "When will final exam timetable and date sheets be announced?"
+  Rank 1 | Score: 0.6845 ★ (BEST MATCH) -> The examination office publishes examination schedules.
+  Rank 2 | Score: 0.2312                 -> Students can register courses through the student portal.
+  Rank 3 | Score: 0.1743                 -> The library provides digital research resources.
+  Rank 4 | Score: 0.1589                 -> The finance office handles tuition fee issues.
+
+[QUERY 3]: "I need help resolving my university tuition fee balance."
+  Rank 1 | Score: 0.7410 ★ (BEST MATCH) -> The finance office handles tuition fee issues.
+  Rank 2 | Score: 0.2215                 -> Students can register courses through the student portal.
+  Rank 3 | Score: 0.1654                 -> The examination office publishes examination schedules.
+  Rank 4 | Score: 0.1420                 -> The library provides digital research resources.
+
+[QUERY 4]: "How do I access academic journals, books, and study materials?"
+  Rank 1 | Score: 0.6923 ★ (BEST MATCH) -> The library provides digital research resources.
+  Rank 2 | Score: 0.2789                 -> Students can register courses through the student portal.
+  Rank 3 | Score: 0.2014                 -> The examination office publishes examination schedules.
+  Rank 4 | Score: 0.1345                 -> The finance office handles tuition fee issues.
+
+================================================================================
+ALL PHASES (01 - 06) COMPLETED SUCCESSFULLY WITHOUT ERRORS.
+================================================================================

@@ -1,0 +1,53 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Packaging and build output
+build/
+dist/
+*.egg-info/
+
+# Generated SentencePiece tokenizer artifacts (code06 recreates them on every run)
+my_tokenizer.model
+my_tokenizer.vocab
+training.txt
+*.model
+*.vocab
+
+# Downloaded model weights and caches
+.cache/
+huggingface/
+*.bin
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log

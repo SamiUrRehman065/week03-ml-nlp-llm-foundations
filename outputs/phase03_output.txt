@@ -1,0 +1,156 @@
+***************************************************************************
+PHASE 03: COMPLETE TOKENIZATION EXPERIMENTAL SUITE
+***************************************************************************
+============================================================
+PHASE 03 - CODE 01: BERT TOKENIZATION & ENCODING
+============================================================
+Original Text: Large language models are powerful.
+
+Tokens:
+['large', 'language', 'models', 'are', 'powerful', '.']
+
+Token IDs:
+[101, 2312, 2653, 4275, 2024, 3928, 1012, 102]
+
+============================================================
+PHASE 03 - CODE 02: BERT ENCODING, SPECIAL TOKENS & DECODING
+============================================================
+Original text:
+Large language models are powerful.
+
+Tokens:
+['large', 'language', 'models', 'are', 'powerful', '.']
+
+Token IDs:
+[101, 2312, 2653, 4275, 2024, 3928, 1012, 102]
+
+Number of tokens:
+8
+
+Decoded text:
+[CLS] large language models are powerful. [SEP]
+
+============================================================
+PHASE 03 - CODE 03: BPE CHARACTER PAIR COUNTING
+============================================================
+Character Vocab Lists per Word:
+[['l', 'o', 'w'], ['l', 'o', 'w', 'e', 'r'], ['l', 'o', 'w', 'e', 's', 't']]
+
+Adjacent Character Pair Frequencies:
+Counter({('l', 'o'): 3, ('o', 'w'): 3, ('w', 'e'): 2, ('e', 'r'): 1, ('e', 's'): 1, ('s', 't'): 1})
+
+Most Frequent Pair: (('l', 'o'), 3)
+
+============================================================
+PHASE 03 - CODE 04: CHARACTER-LEVEL TOKENIZATION & VOCABULARY
+============================================================
+Text: hello
+Character Tokens: ['h', 'e', 'l', 'l', 'o']
+Vocabulary Map: {'h': 0, 'e': 1, 'l': 2, 'o': 3}
+Mapped Token IDs: [0, 1, 2, 2, 3]
+
+============================================================
+PHASE 03 - CODE 05: COMPARING TOKENIZERS (BERT VS. GPT-2)
+============================================================
+
+Model: bert-base-uncased
+Tokens: ['artificial', 'intelligence', 'is', 'transforming', 'software', 'engineering', '.']
+Number of tokens: 7
+
+Model: gpt2
+Tokens: ['Art', 'ificial', 'Ġintelligence', 'Ġis', 'Ġtransforming', '\n', 'software', 'Ġengineering', '.']
+Number of tokens: 9
+
+============================================================
+PHASE 03 - CODE 06: SENTENCEPIECE UNIGRAM MODEL TRAINING & USAGE
+============================================================
+1. Written training text to 'training.txt'
+2. Trained SentencePiece model successfully -> 'my_tokenizer.model'
+
+Original text:
+Artificial intelligence is changing software engineering.
+
+Tokens (String Subwords):
+[' Art', 'ific', 'i', 'al', ' ', 'int', 'ell', 'i', 'g', 'en', 'ce', ' is', ' changing', ' software', ' engineering', '.']
+
+Token IDs:
+[24, 45, 12, 43, 6, 31, 38, 12, 29, 39, 44, 28, 48, 27, 26, 7]
+
+Number of tokens:
+16
+
+Decoded text:
+Artificial intelligence is changing software engineering.
+
+============================================================
+PHASE 03 - CODE 07: SPECIAL TOKENS ([CLS], [SEP])
+============================================================
+Text: Hello world
+Tokens: ['hello', 'world']
+Token IDs (with special tokens): [101, 7592, 2088, 102]
+
+Special Token Properties:
+cls_token:    [CLS]
+sep_token:    [SEP]
+cls_token_id: 101
+sep_token_id: 102
+
+============================================================
+PHASE 03 - CODE 08: CHARACTERS VS. TOKENS
+============================================================
+Input Text:
+Artificial intelligence is transforming
+software engineering and many other fields.
+
+Characters: 86
+Tokens:     11
+Compression Ratio (Chars/Token): 7.82
+
+============================================================
+PHASE 03 - CODE 09: BASIC WHITESPACE TOKENIZATION
+============================================================
+Text: Agentic AI systems can use tools
+Tokens: ['agentic', 'ai', 'systems', 'can', 'use', 'tools']
+Token count: 6
+
+============================================================
+PHASE 03 - CODE 10: VOCABULARY MAPPING & <UNK> TOKEN HANDLING
+============================================================
+Tokens:
+['Large', 'language', 'models', 'understand', 'text']
+
+Vocabulary Dictionary: {'<UNK>': 0, 'Large': 1, 'language': 2, 'models': 3, 'understand': 4, 'text': 5}
+
+Token IDs:
+[1, 2, 3, 4, 5]
+
+Demonstrating Out-Of-Vocabulary (<UNK>) Resolution:
+  Sentence: 'Large language robots understand code'
+  Tokens:   ['Large', 'language', 'robots', 'understand', 'code']
+  Token IDs: [1, 2, 0, 4, 0]  (Notice 'robots' and 'code' mapped to <UNK>=0)
+
+============================================================
+PHASE 03 - CODE 11: BERT SUBWORD TOKENIZATION (WORDPIECE)
+============================================================
+Input Text: Playing with language models.
+Subword Tokens: ['playing', 'with', 'language', 'models', '.']
+
+Note: 'playing' is decomposed into root 'play' and suffix '##ing' when unfamiliar.
+The '##' prefix indicates that this subword attaches to the preceding token.
+
+============================================================
+--- THEORETICAL SUMMARY: SPECIAL TOKENS & SUBWORD TOKENIZATION ---
+============================================================
+1. Special Tokens:
+   - [CLS] (Classification Token): Added at the beginning of input sequence.
+     Its hidden state vector is traditionally pooled for sequence classification tasks.
+   - [SEP] (Separator Token): Marks boundaries between sentences (e.g., question & context).
+   - [PAD] / [MASK] / [UNK]: Used for batch alignment, masked language modeling,
+     and out-of-vocabulary fallback.
+
+2. Subword Tokenization (WordPiece / BPE / Unigram):
+   - Overcomes Out-Of-Vocabulary (OOV) limitations by decomposing rare or inflected words
+     into common morphological sub-units (e.g., 'playing' -> 'play' + '##ing').
+   - Balances vocabulary compactness (typically 30,000-50,000 tokens) with representation power,
+     preventing the vocabulary explosion of word-level models while preserving semantic
+     meaning better than purely character-level models.
